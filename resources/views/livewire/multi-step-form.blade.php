@@ -25,7 +25,7 @@
                                         {{ $isSelected
                                             ? 'border-[#F6C90E] shadow-[0_4px_6px_-1px_rgba(246,201,14,0.5),0_2px_4px_-1px_rgba(246,201,14,0.06)]'
                                             : 'border-gray-300 hover:shadow-md' }}">
-                                    <img src="https://picsum.photos/seed/{{ $product->name }}/200/300"
+                                    <img src="{{ asset('storage/' . $product->image) }}"
                                         alt="{{ $product->name }}" class="h-full w-full object-cover rounded-md mb-3" />
 
                                     <div class="text-center">
@@ -85,27 +85,27 @@
                         },
                         async init() {
                             this.map = L.map(this.$refs.map).setView([51.1642, 10.4541194], 6);
-                    
+
                             L.tileLayer(
                                 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }
                             ).addTo(this.map);
-                    
+
                             const waypointIcon = L.icon({
                                 iconUrl: '{{ asset('img/waypoint.png') }}',
                                 iconSize: [30, 40],
                                 iconAnchor: [15, 40],
                                 popupAnchor: [0, -40]
                             });
-                    
+
                             this.map.on('click', async (e) => {
                                 const { lat, lng } = e.latlng;
-                    
+
                                 if (this.marker) {
                                     this.map.removeLayer(this.marker);
                                 }
-                    
+
                                 this.placeName = await this.fetchPlaceName(lat, lng);
-                    
+
                                 this.marker = L.marker([lat, lng], { icon: waypointIcon }).addTo(this.map)
                                     .bindPopup(this.placeName)
                                     .openPopup();
