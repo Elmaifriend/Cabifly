@@ -28,6 +28,7 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                 ->required()
+                ->columnSpanFull()
                 ->maxLength(255)
                 ->live(onBlur: true)
                 ->afterStateUpdated(function (?string $state, Forms\Set $set) {
@@ -46,8 +47,22 @@ class ProductResource extends Resource
                 ->numeric()
                 ->minValue(0),
 
+            Forms\Components\Select::make('category')
+                ->required()
+                ->options([
+                    'tecnologia' => 'Tecnología',
+                    'moda' => 'Moda',
+                    'hogar' => 'Hogar',
+                    'juguetes' => 'Juguetes',
+                    'otros' => 'Otros',
+                ])
+                ->label('Categoría')
+                ->searchable(), // Opcional: permite buscar dentro del select
+
+
             Forms\Components\FileUpload::make('image')
                 ->image()
+                ->disk('public')
                 ->directory('products')
                 ->columnSpanFull(),
             ]);
@@ -58,7 +73,8 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                ->circular(),
+                ->url(fn ($record) => asset('storage/' . $record->image))
+                ->disk('public'),
 
             Tables\Columns\TextColumn::make('name')
                 ->searchable(),
