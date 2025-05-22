@@ -16,10 +16,13 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $categories = ['electronics', 'clothing', 'home_appliances', 'books', 'sports'];
+
         return [
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
             'price' => $this->faker->randomFloat(2, 10, 1000),
+            'category' => $this->faker->randomElement($categories),
             'stock_quantity' => $this->faker->numberBetween(0, 100),
             'image' => $this->faker->imageUrl(640, 480, 'products', true), // Ej: "https://picsum.photos/640/480?products"
         ];

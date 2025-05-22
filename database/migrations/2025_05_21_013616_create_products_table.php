@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
+            $table->string("category");
             $table->integer('stock_quantity')->unsigned()->default(0);
             $table->string('image')->default('products/default.png'); // Ruta de la imagen
             $table->timestamps();
